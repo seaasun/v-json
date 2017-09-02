@@ -1,0 +1,108 @@
+<template>
+  <div>
+    <div>
+      <span @click ="undo">undo</span>
+      <span @click ="redo">redo</span>
+    </div>
+    <v-item :tree= 'tree' :schemas= 'schemas' :index="0" >
+    </v-item>
+    <!--<div @click="change">refresh</div>-->
+    <div style="display:none">{{mid}}</div>
+  </div>
+</template>
+
+<script>
+  import Item from './Item.vue'
+  import utils from './utils'
+  // import _ from 'lodash'
+
+  export default {
+    name: 'json',
+    props: ['value', 'schemas'],
+    data () {
+      return {
+        historyJsons: [],
+        undoIndex: 1,
+        isTreeChange: false,
+        isValueChange: true,
+        isUndo: false,
+        tree: {}
+      }
+    },
+    components: {
+      'v-item': Item
+    },
+    created () {
+      let tree = utils.parse(this.value, 'root')
+      if (tree !== false) {
+        this.tree = tree
+      }
+    },
+    watch: {
+      value (value) {
+        if (!this.isTreeChange) {
+          let tree = utils.parse(value, 'root')
+          if (tree !== false) {
+            this.tree = tree
+            this.isValueChange = true
+          }
+        }
+        this.isTreeChange = false
+      }
+    },
+    computed: {
+      mid () {
+        // this.save()
+        console.log('ss')
+        if (!this.isValueChange) {
+          console.log(22)
+          utils.stringify(this.tree)['root']
+          this.$emit('input', utils.stringify(this.tree)['root'])
+          this.isTreeChange = true
+        }
+        this.isValueChange = false
+      }
+    },
+    methods: {
+      // 自动保存副本
+      save () {
+        // 写入栈,作为回滚记录
+        if (this.isUndo) {
+          this.isUndo = false
+          this.undoIndex += 1 // undo 的操作也会被记录，所以增加一索引
+        } else {
+          this.historyJsons.push(JSON.parse(JSON.stringify(this.tree)))
+          this.undoIndex = 1
+        }
+        // 最大100个记录
+        if (this.historyJsons.length > 100) {
+          this.hitoryJsons.shift()
+        }
+      },
+      // 撤销
+      undo () {
+        let length = this.historyJsons.length
+        if (length - this.undoIndex <= 0) return // 避免过度撤销
+
+        let tree = this.historyJsons[length - this.undoIndex - 1]
+        this.tree = JSON.parse(JSON.stringify(tree))
+        this.undoIndex += 1
+        this.isUndo = true
+      },
+      // 还原
+      redo () {
+        let length = this.historyJsons.length
+
+        if (this.undoIndex <= 1) return // 避免过渡撤销
+        this.undoIndex -= 1
+        let tree = this.historyJsons[length - this.undoIndex]
+        this.tree = JSON.parse(JSON.stringify(tree))
+        this.isUndo = true
+      }
+    }
+  }
+</script>
+
+<style>
+
+</style>
