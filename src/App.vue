@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Json v-model="data" :schemas ="schemas" >
+    <Json v-model="data" :schemas ="schemas" name="root">
     </Json>
 
     <hr>
@@ -22,7 +22,7 @@ let data = {
     str2: 'str2'
   }
 }
-data = { str: [1] }
+data = [1]
 
 export default {
   name: 'app',

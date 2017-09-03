@@ -2,7 +2,35 @@
 
 > easy json
 
-## Build Setup
+## Install
+`$ npm install v-json --save`
+
+## Example
+```
+<template>
+  <Json v-model="json" :schemas ="schemas" name="root">
+<template>
+
+<script>
+import Json form 'v-json'
+
+export default {
+  components: {
+    Json
+  },
+  data: {
+    json: {
+     key: "hello world"
+    },
+    schemas: {}
+  }
+}
+
+</script>
+```
+
+
+## Dev Build Setup
 
 ``` bash
 # install dependencies

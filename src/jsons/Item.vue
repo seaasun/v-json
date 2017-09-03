@@ -123,7 +123,7 @@
         return this.uid === this.state.showOptionUid
       },
       computedName () {
-        if (this.$parent.tree.type === 'array') {
+        if (this.$parent.tree.type === 'array' && !this.isRoot()) {
           this.tree.name = this.index
           return this.index
         } else if (this.tree.name) {

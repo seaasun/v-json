@@ -2,6 +2,7 @@
   "name": "vue-json",
   "version": "1.0.0",
   "description": "easy json",
+  "main": "src/jsons/index.js",
   "author": "seaasun <seaasun@qq.com>",
   "private": true,
   "scripts": {

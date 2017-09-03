@@ -7,7 +7,7 @@
     <v-item :tree= 'tree' :schemas= 'schemas' :index="0" >
     </v-item>
     <!--<div @click="change">refresh</div>-->
-    <div>{{mid}}</div>
+    <div style="display: none">{{mid}}</div>
 
   </div>
 </template>
@@ -19,47 +19,54 @@
 
   export default {
     name: 'json',
-    props: ['value', 'schemas'],
+    props: {
+      'value': {
+        default: {} // json格式
+      },
+      'schemas': {
+        default: {} // 支配json的格式
+      },
+      'name': {
+        default: 'root' // 根的名称
+      }
+    },
     data () {
       return {
-        historyJsons: [],
-        undoIndex: 1,
-        isTreeChange: false,
-        isValueChange: true,
-        isUndo: false,
-        tree: {}
+        historyJsons: [], // 历史存档
+        undoIndex: 1, // 历史存到位置，倒序
+        isUndo: false, // 是否为回滚操作
+        tree: {} // 被解析的json
       }
     },
     components: {
       'v-item': Item
     },
     created () {
-      let tree = utils.parse(this.value, 'root')
-      tree['type'] = 'object'
+      // 初始化tree
+      let tree = utils.parse(this.value, this.name) || false
       if (tree !== false) {
         this.tree = tree
       }
     },
     watch: {
+      // value改变时更新tree
       value (value) {
-        let tree = utils.parse(value, 'root')
-        tree['type'] = 'object'
+        let tree = utils.parse(value, this.name)
         this.tree = tree
-        this.isValueChange = true
       }
     },
     computed: {
+      // 当tree改变时更新value
       mid () {
         let value
-        try {
+        try { // value 有时不是合法的json
           value = utils.stringify(this.tree)
         } catch (e) {
           value = this.value
         }
-        if (_.isEqual(value, this.value)) {
+        if (_.isEqual(value, this.value)) { // 避免value改变时再更新value
           return this.value
         } else {
-          console.log('emit')
           this.$emit('input', value)
           return value
         }
