@@ -13,6 +13,7 @@
     <!--<div @click="change">refresh</div>-->
     <div style="display: none">{{mid}}</div>
     <!-- TODO：这并不是一个好方法，需要改-->
+    <!-- test -->
 
   </div>
 </template>
