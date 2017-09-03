@@ -22,7 +22,7 @@
         <item-input v-model="tree.name"
                      :display="computedValue"
                      :tree="tree"
-                     :isName="true"
+                     :isName="false"
                      :editable="valueEditable">
         </item-input>
 
@@ -210,8 +210,6 @@
             // 判断为同名
             if (item.isUniqueName && item.name === this.tree.name && item !== this.tree) {
               utils.addErrorNameUid(this.uid) // 添加至全局错误
-              // this.state.errorNameUids = [1]
-              // this.state.errorNameUids.push(uid)
               return false
             }
           }

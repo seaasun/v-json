@@ -3,10 +3,13 @@
     <Json v-model="data" :schemas ="schemas" name="root">
     </Json>
 
-    <hr>
-    <textarea v-model="d">
-    </textarea>
+    <hr style="margin-top: 40px">
+    <textarea v-model="d" rows="10" cols="40">
+    </textarea >
+    
+    <div style="margin-top: 40px">
     {{data}}
+    </div>
   </div>
 </template>
 
@@ -22,7 +25,6 @@ let data = {
     str2: 'str2'
   }
 }
-data = [1]
 
 export default {
   name: 'app',
