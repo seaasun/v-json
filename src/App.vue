@@ -6,7 +6,7 @@
     <hr style="margin-top: 40px">
     <textarea v-model="d" rows="10" cols="40">
     </textarea >
-    
+
     <div style="margin-top: 40px">
     {{data}}
     </div>
