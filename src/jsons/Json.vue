@@ -38,7 +38,8 @@
         historyJsons: [], // 历史存档
         undoIndex: 1, // 历史存到位置，倒序
         isUndo: false, // 是否为回滚操作
-        tree: {} // 被解析的json
+        tree: {}, // 被解析的json
+        state: utils.state
       }
     },
     components: {
@@ -67,12 +68,18 @@
         } catch (e) {
           value = this.value
         }
-        if (_.isEqual(value, this.value)) { // 避免value改变时再更新value
+        if (
+          _.isEqual(value, this.value) && // 避免value改变时再更新value
+          this.isNameUnique // 对象无重名时才可更新
+        ) {
           return this.value
         } else {
           this.$emit('input', value)
           return value
         }
+      },
+      isNameUnique () {
+        return this.state.errorNameUids.length === 1
       }
     },
     methods: {

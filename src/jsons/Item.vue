@@ -133,7 +133,7 @@
         return this.uid === this.state.showOptionUid
       },
       computedName () {
-        if (this.$parent.tree.type === 'array' && !this.isRoot()) {
+        if (this.$parent.tree.type === 'array' && !this.isRoot) {
           this.tree.name = this.index
           return this.index
         } else if (this.tree.name) {
@@ -188,7 +188,7 @@
         return items
       },
       computedId () {
-        if (this.isRoot()) {
+        if (this.isRoot) {
           return ['root']
         } else {
           let ids = utils.copy(this.parentId)
@@ -204,21 +204,27 @@
       },
       // 检测对象的key是否相同
       isNameUnique () {
-        // 判断父为object
-        if (this.$parent.tree.type === 'object' && _.isObject(this.$parent.tree.value) && !this.isRoot()) {
+        // 1. 判断父是object
+        if (!this.isRoot && this.$parent.tree.type === 'object') {
           for (let item of this.$parent.tree.value) {
             // 判断为同名
             if (item.isUniqueName && item.name === this.tree.name && item !== this.tree) {
+              // utils.addErrorNameUid(this.uid) // 添加至全局错误
               return false
             }
           }
+          // utils.reduiceErrorNameUid(this.uid) // 从全局错误删除
+          this.$set(this.tree, 'isUniqueName', true)
+          return true
         }
-        this.$set(this.tree, 'isUniqueName', true)
-        return 3
       },
       nextDeep () {
         // 如果有子元素，子元素的深度
         return this.deep + 1
+      },
+      isRoot () {
+        // 是否为根元素
+        return this.deep === 1
       }
       // 是否为根元素
     },
@@ -287,10 +293,6 @@
       // 设置隐藏
       setHidden (val) {
         this.isSetHidden = val
-      },
-      // 判断是跟组件
-      isRoot () {
-        return this.$parent.$options._componentTag !== 'v-item'
       },
       // 更新组件的type
       updateType (forceType) {

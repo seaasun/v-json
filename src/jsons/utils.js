@@ -2,13 +2,15 @@
  * Created by seaasun on 2017/8/24.
  */
 import _ from 'lodash'
+// import vue from 'vue'
 
 export default {
   _object: {
     'id': ''
   },
   state: {
-    showOptionUid: 0
+    showOptionUid: 0,  // 募前显示的option uid， 0 为没有显示
+    errorNameUids: []  // 有重复名称的object，长度空时没有重名
   },
   // 支持的类别
   types: [
@@ -22,9 +24,17 @@ export default {
     'function', // 直接执行的函数
     'string' // 字符串
   ],
+  // action 相关
   // 修改显示哪个组件的菜单
   updateShowOptionUid (id) {
     this.state.showOptionUid = id
+  },
+  addErrorNameUid (uid) {
+    _.pull(this.state.errorNameUids, uid)
+    this.state.errorNameUids.push(uid)
+  },
+  reduiceErrorNameUid (uid) {
+    _.pull(this.state.errorNameUids, uid)
   },
   // 深度copy
   copy (value) {
