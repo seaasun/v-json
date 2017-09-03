@@ -76,7 +76,7 @@
       <span v-if = "showReduce()" @click="reduceItem()" class="vj-reduce-btn">
         - </span>
     </div>
-
+    <div style="display: none">{{isNameUnique}}</div>
   </div>
 </template>
 
@@ -209,11 +209,13 @@
           for (let item of this.$parent.tree.value) {
             // 判断为同名
             if (item.isUniqueName && item.name === this.tree.name && item !== this.tree) {
-              // utils.addErrorNameUid(this.uid) // 添加至全局错误
+              utils.addErrorNameUid(this.uid) // 添加至全局错误
+              // this.state.errorNameUids = [1]
+              // this.state.errorNameUids.push(uid)
               return false
             }
           }
-          // utils.reduiceErrorNameUid(this.uid) // 从全局错误删除
+          utils.reduiceErrorNameUid(this.uid) // 从全局错误删除
           this.$set(this.tree, 'isUniqueName', true)
           return true
         }

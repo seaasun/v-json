@@ -29,7 +29,9 @@ export default {
   data () {
     return {
       data: data,
-      schemas: schemas.test
+      schemas: schemas.test,
+      isPeopleChange: false,
+      value: {}
     }
   },
   components: {
@@ -38,10 +40,19 @@ export default {
   computed: {
     d: {
       get () {
-        return JSON.stringify(this.data, null, 4)
+        let data = this.data
+        if (!this.isPeopleChange) {
+          console.log(111)
+          return JSON.stringify(data, null, 4)
+        } else {
+          this.isPeopleChange = false
+          return this.value
+        }
       },
       set (value) {
         try {
+          this.value = value
+          this.isPeopleChange = true
           this.data = JSON.parse(value)
         } catch (e) {
         }

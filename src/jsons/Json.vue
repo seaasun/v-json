@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div>
-      <span @click ="undo">undo</span>
-      <span @click ="redo">redo</span>
-    </div>
+    <!--撤销和还原测试-->
+    <!--<div>-->
+      <!--<span @click ="undo">undo</span>-->
+      <!--<span @click ="redo">redo</span>-->
+    <!--</div>-->
     <v-item :tree= 'tree'
             :schemas= 'schemas'
             :index="0"
@@ -55,8 +56,10 @@
     watch: {
       // value改变时更新tree
       value (value) {
-        let tree = utils.parse(value, this.name)
-        this.tree = tree
+        if (this.state.errorNameUids.length === 0) { // 无重名时可更新
+          let tree = utils.parse(value, this.name)
+          this.tree = tree
+        }
       }
     },
     computed: {
@@ -68,18 +71,12 @@
         } catch (e) {
           value = this.value
         }
-        if (
-          _.isEqual(value, this.value) && // 避免value改变时再更新value
-          this.isNameUnique // 对象无重名时才可更新
-        ) {
+        if (_.isEqual(value, this.value)) { // 避免value改变时再更新value
           return this.value
         } else {
           this.$emit('input', value)
           return value
         }
-      },
-      isNameUnique () {
-        return this.state.errorNameUids.length === 1
       }
     },
     methods: {
