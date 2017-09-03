@@ -229,7 +229,7 @@
       // 是否为根元素
     },
     methods: {
-      // 隐藏添加菜单
+      // 显示或隐藏添加菜单
       toggleOption () {
         if (this.computedOptions.length > 0) {
           if (this.state.showOptionUid === this.uid) {
@@ -242,6 +242,10 @@
         }
       },
       // 显示添加菜单
+      showOption () {
+        utils.updateShowOptionUid(this.uid)
+      },
+      // 隐藏添加菜单
       hideOption () {
         utils.updateShowOptionUid(0)
       },
@@ -277,7 +281,9 @@
         if (this.tree.type !== 'object' && this.tree.type !== 'array') {
           this.updateType('object')
         }
+        console.log(1)
         this.tree.value.push(item)
+        console.log(2)
       },
       // 删除自己
       reduceItem () {

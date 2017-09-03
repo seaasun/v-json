@@ -56,3 +56,11 @@ npm test
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+对了。 easy es 那个项目我这几天有重构了下。https://seaasun.github.io/v-json/dist/。 这是一个demo，UI没好好弄，没作es查询语句，你先凑合看看
+
+
+改进地方：
+1. 界面. 你上次说别人不大会用。 所以界面按照chrome等json格式化的样子做。
+2. 双向绑定。 在textarea中修改， json树会自动更新（原来的不可）。
+3. 独立组件。 直接做成独立组件，方便复用，用法：<Json v-model="data" :schemas ="schemas" name="root"></Json>

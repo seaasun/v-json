@@ -26,6 +26,8 @@ let data = {
   }
 }
 
+data = {}
+
 export default {
   name: 'app',
   data () {
@@ -44,7 +46,6 @@ export default {
       get () {
         let data = this.data
         if (!this.isPeopleChange) {
-          console.log(111)
           return JSON.stringify(data, null, 4)
         } else {
           this.isPeopleChange = false
