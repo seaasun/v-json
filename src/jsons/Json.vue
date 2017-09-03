@@ -4,7 +4,10 @@
       <span @click ="undo">undo</span>
       <span @click ="redo">redo</span>
     </div>
-    <v-item :tree= 'tree' :schemas= 'schemas' :index="0" >
+    <v-item :tree= 'tree'
+            :schemas= 'schemas'
+            :index="0"
+            :deep="1">
     </v-item>
     <!--<div @click="change">refresh</div>-->
     <div style="display: none">{{mid}}</div>

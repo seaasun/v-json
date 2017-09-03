@@ -45,7 +45,12 @@
       <div v-show="!isSetHidden" class="vj-item-block">
         <div v-for = "(item, index) in tree.value"
           class="vj-item" >
-          <v-item :tree= "item" :schemas= 'schemas' :index="index" :parentId="computedId"></v-item>
+          <v-item :tree= "item"
+                  :schemas= 'schemas'
+                  :index="index"
+                  :parentId="computedId"
+                  :deep="nextDeep">
+          </v-item>
         </div>
       </div>
     </div>
@@ -87,7 +92,12 @@
 
   export default {
     name: 'v-item',
-    props: ['tree', 'schemas', 'index', 'parentId'],
+    props: [
+      'tree', // 被解析的json
+      'schemas',  // 控制json的配置
+      'index',  // 父亲的第几个子元素，第一个为0
+      'parentId', // 父Id
+      'deep'], // 深度，第一层为0
     components: {
       ItemOption,
       ItemInput
@@ -205,7 +215,12 @@
         }
         this.$set(this.tree, 'isUniqueName', true)
         return 3
+      },
+      nextDeep () {
+        // 如果有子元素，子元素的深度
+        return this.deep + 1
       }
+      // 是否为根元素
     },
     methods: {
       // 隐藏添加菜单
