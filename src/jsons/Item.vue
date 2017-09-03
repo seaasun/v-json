@@ -76,7 +76,6 @@
       <span v-if = "showReduce()" @click="reduceItem()" class="vj-reduce-btn">
         - </span>
     </div>
-    <div style="display: none">{{isNameUnique}}</div>
   </div>
 </template>
 
@@ -113,7 +112,7 @@
     },
     created () {
       this.isSetHidden = this.isHidden || false
-
+      this.isNameUnique()
       if (this.schema.showOption) {
         this.showOption()
       }
@@ -127,6 +126,9 @@
       this.updateType()
     },
     watch: {
+      'tree.name' () {
+        this.isNameUnique() // TODO: 这并不是一个好方法，需要改
+      }
     },
     computed: {
       isShowOption () {
@@ -202,7 +204,18 @@
       isIteration () {
         return this.tree.type === 'object' || this.tree.type === 'array'
       },
-      // 检测对象的key是否相同
+      nextDeep () {
+        // 如果有子元素，子元素的深度
+        return this.deep + 1
+      },
+      isRoot () {
+        // 是否为根元素
+        return this.deep === 1
+      }
+      // 是否为根元素
+    },
+    methods: {
+      // 检测对象的key是否相同, 改为method
       isNameUnique () {
         // 1. 判断父是object
         if (!this.isRoot && this.$parent.tree.type === 'object') {
@@ -218,17 +231,6 @@
           return true
         }
       },
-      nextDeep () {
-        // 如果有子元素，子元素的深度
-        return this.deep + 1
-      },
-      isRoot () {
-        // 是否为根元素
-        return this.deep === 1
-      }
-      // 是否为根元素
-    },
-    methods: {
       // 显示或隐藏添加菜单
       toggleOption () {
         if (this.computedOptions.length > 0) {
@@ -281,9 +283,7 @@
         if (this.tree.type !== 'object' && this.tree.type !== 'array') {
           this.updateType('object')
         }
-        console.log(1)
         this.tree.value.push(item)
-        console.log(2)
       },
       // 删除自己
       reduceItem () {
